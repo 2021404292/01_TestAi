@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <!-- 基本设置 -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>实时热点话题追踪系统</title>
+    <!-- 引入样式文件 -->
+    <link rel="stylesheet" href="styles.css">
+    <!-- 引入Font Awesome图标库 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- 头部区域：包含标题、导航和统计信息 -->
+    <header>
+        <div class="header-content">
+            <!-- 系统标题 -->
+            <h1><i class="fas fa-chart-line"></i> 实时热点话题追踪系统</h1>
+            <!-- 分类导航栏 -->
+            <nav class="category-nav">
+                <!-- 分类项目：data-category属性用于JS中识别分类 -->
+                <a href="#" class="nav-item active" data-category="all">全部话题</a>
+                <a href="#" class="nav-item" data-category="tech">科技</a>
+                <a href="#" class="nav-item" data-category="economy">数字经济</a>
+                <a href="#" class="nav-item" data-category="military">军事</a>
+                <a href="#" class="nav-item" data-category="society">社会</a>
+                <a href="#" class="nav-item" data-category="entertainment">文娱</a>
+            </nav>
+            <!-- 头部统计信息 -->
+            <div class="header-stats">
+                <!-- 统计项：使用id便于JS更新数据 -->
+                <div class="stat-item">
+                    <i class="fas fa-fire"></i>
+                    <span>今日热点：<span id="todayTopics">0</span></span>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-users"></i>
+                    <span>讨论人数：<span id="totalUsers">0</span></span>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-clock"></i>
+                    <span>更新时间：<span id="lastUpdate">--:--</span></span>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- 主要内容区域 -->
+    <main>
+        <div class="container">
+            <!-- 左侧面板：包含数据概览和话题列表 -->
+            <div class="left-panel">
+                <!-- 数据概览卡片 -->
+                <div class="overview-cards">
+                    <h2 id="categoryTitle" class="category-title">全部话题</h2>
+                    <div class="card">
+                        <div class="card-icon"><i class="fas fa-hashtag"></i></div>
+                        <div class="card-content">
+                            <h3>热门话题数</h3>
+                            <p id="topicCount">0</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon"><i class="fas fa-comments"></i></div>
+                        <div class="card-content">
+                            <h3>总讨论量</h3>
+                            <p id="totalDiscussions">0</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 话题列表区域 -->
+                <div class="topics-list">
+                    <!-- 话题列表头部：包含标题和过滤器 -->
+                    <div class="topics-header">
+                        <h2><i class="fas fa-list"></i> 热门话题</h2>
+                        <div class="topics-filter">
+                            <select id="topicFilter">
+                                <option value="hot">最热门</option>
+                                <option value="new">最新</option>
+                                <option value="rising">上升最快</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!-- 话题列表容器：由JS动态填充 -->
+                    <ul id="topicsList"></ul>
+                </div>
+            </div>
+
+            <!-- 右侧面板：包含话题详情、相关话题和评论 -->
+            <div class="right-panel">
+                <!-- 话题详情区域 -->
+                <div class="topic-detail">
+                    <h2 id="selectedTopicTitle">话题详情</h2>
+                    <div class="topic-content">
+                        <div class="topic-header">
+                            <span class="topic-category"><i class="fas fa-tag"></i> <span id="topicCategory">未分类</span></span>
+                            <span class="topic-time"><i class="fas fa-clock"></i> <span id="topicTime">--:--</span></span>
+                        </div>
+                        <div class="topic-description" id="topicDescription">
+                            选择一个话题查看详情
+                        </div>
+                    </div>
+                    <div class="topic-stats">
+                        <div class="stat-box">
+                            <span class="stat-label">讨论量</span>
+                            <span id="detailCount" class="stat-value">-</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-label">增长率</span>
+                            <span id="detailGrowth" class="stat-value">-</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-label">参与人数</span>
+                            <span id="detailUsers" class="stat-value">-</span>
+                        </div>
+                    </div>
+                    <div class="topic-actions">
+                        <button class="action-btn" id="shareBtn"><i class="fas fa-share-alt"></i> 分享</button>
+                        <button class="action-btn" id="followBtn"><i class="fas fa-star"></i> 关注</button>
+                        <button class="action-btn" id="reportBtn"><i class="fas fa-flag"></i> 举报</button>
+                    </div>
+                </div>
+
+                <!-- 相关话题区域 -->
+                <div class="related-topics">
+                    <h2><i class="fas fa-link"></i> 相关话题</h2>
+                    <div class="topics-filter-bar">
+                        <button class="filter-btn active" data-filter="all">全部</button>
+                        <button class="filter-btn" data-filter="hot">热门</button>
+                        <button class="filter-btn" data-filter="new">最新</button>
+                    </div>
+                    <div id="relatedTopicsList" class="related-topics-container">
+                        <!-- 相关话题将通过JavaScript动态添加 -->
+                    </div>
+                </div>
+
+                <!-- 热门评论区域 -->
+                <div class="hot-comments">
+                    <h2><i class="fas fa-comments"></i> 热门评论</h2>
+                    <div id="commentsList" class="comments-container">
+                        <!-- 评论将通过JavaScript动态添加 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 加载动画遮罩层 -->
+    <div id="loading" class="loading-overlay">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <!-- 引入JavaScript文件 -->
+    <script src="script.js"></script>
+</body>
+</html> 
